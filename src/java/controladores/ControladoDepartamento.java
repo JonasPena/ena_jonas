@@ -5,8 +5,7 @@
  */
 package controladores;
 
-import dao.EstadoDAO;
-import dao.RequerimientoDAO;
+import dao.DepartamentoDAO;
 import dao.RequerimientoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,14 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelos.Estado;
+import modelos.Departamento;
 
 /**
  *
  * @author Edgard
  */
-@WebServlet(name = "ControladorEstado", urlPatterns = {"/ControladorEstado"})
-public class ControladorEstado extends HttpServlet {
+@WebServlet(name = "ControladorDepartamento", urlPatterns = {"/ControladorDepartamento"})
+public class ControladoDepartamento extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,23 +55,23 @@ public class ControladorEstado extends HttpServlet {
             String nombre = request.getParameter("nombre").trim();
            
             if(nombre.equals("")){
-                response.sendRedirect("crudEstados.jsp?msj=valores erroneos");
+                response.sendRedirect("crudDepartamento.jsp?msj=valores erroneos");
             }else{
-                EstadoDAO ed = new EstadoDAO();
-                Estado e = new Estado(nombre);
-                if(ed.obtenerEstado(e.getNombre())==null){
+                DepartamentoDAO ed = new DepartamentoDAO();
+                Departamento e = new Departamento(nombre);
+                if(ed.obtenerDepartamento(e.getNombre())==null){
                     int respuesta = ed.registrar(e);
                     if(respuesta==1){
-                    response.sendRedirect("crudEstados.jsp?msj=Estado registrado");
+                    response.sendRedirect("crudDepartamento.jsp?msj=Departamento registrado");
                     }else{
-                    response.sendRedirect("crudEstados.jsp?msj=Estado no se pudo registrar");
+                    response.sendRedirect("crudDepartamento.jsp?msj=Departamento no se pudo registrar");
                     }
                 }else{
-                    response.sendRedirect("crudEstados.jsp?msj=Estado ya existe");
+                    response.sendRedirect("crudDepartamento.jsp?msj=Departamento ya existe");
                 }
             }
            }catch(Exception e){
-               response.sendRedirect("crudEstados.jsp?msj="+e.getMessage());
+               response.sendRedirect("crudDepartamento.jsp?msj="+e.getMessage());
            }
     }
     private void modificar(HttpServletRequest request, HttpServletResponse response){
@@ -84,27 +83,27 @@ public class ControladorEstado extends HttpServlet {
             String nombre = request.getParameter("nombre").trim();
            
             if(nombre.equals("")||id<1){
-                response.sendRedirect("crudEstados.jsp?msj=valores erroneos");
+                response.sendRedirect("crudDepartamento.jsp?msj=valores erroneos");
             }else{
-                EstadoDAO ed = new EstadoDAO();
-                Estado e = new Estado(id,nombre);
-                if(ed.obtenerEstado(e.getId())!=null){
+                DepartamentoDAO ed = new DepartamentoDAO();
+                Departamento e = new Departamento(id,nombre);
+                if(ed.obtenerDepartamento(e.getId())!=null){
                     RequerimientoDAO pd = new RequerimientoDAO();
-                    if(pd.existeEstado(e)){
-                        response.sendRedirect("crudEstados.jsp?msj=No se puede eliminar por tener productos con este estado");
+                    if(pd.existeDepartamento(e)){
+                        response.sendRedirect("crudDepartamento.jsp?msj=No se puede eliminar por tener productos con este estado");
                     }else{
                     int respuesta = ed.eliminar(e);
                     if(respuesta==1){
-                    response.sendRedirect("crudEstados.jsp?msj=Estado eliminado");
+                    response.sendRedirect("crudDepartamento.jsp?msj=Estado eliminado");
                     }else{
-                    response.sendRedirect("crudEstados.jsp?msj=Estado no se pudo eliminar");
+                    response.sendRedirect("crudDepartamento.jsp?msj=Estado no se pudo eliminar");
                     }}
                 }else{
-                    response.sendRedirect("crudEstados.jsp?msj=Estado no existe");
+                    response.sendRedirect("crudDepartamento.jsp?msj=Estado no existe");
                 }
             }
            }catch(Exception e){
-               response.sendRedirect("crudEstados.jsp?msj="+e.getMessage());
+               response.sendRedirect("crudDepartamento.jsp?msj="+e.getMessage());
            }
     }
     

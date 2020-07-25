@@ -6,7 +6,7 @@
 package controladores;
 
 import dao.EstadoDAO;
-import dao.ProductoDAO;
+import dao.RequerimientoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,14 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelos.Producto;
+import modelos.Requerimiento;
 
 /**
  *
  * @author Edgard
  */
 @WebServlet(name = "ControladorProducto", urlPatterns = {"/ControladorProducto"})
-public class ControladorProducto extends HttpServlet {
+public class ControladorRequerimiento extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,61 +39,30 @@ public class ControladorProducto extends HttpServlet {
         switch(accion){
             case "1": registrar(request,response);
                 break;
-            case "2": modificar(request,response);
-        }
-         }else{
-             response.sendRedirect("crudProductos.jsp?msj=No te pases");
+            
+     
          }
     }
-    
-    private void modificar(HttpServletRequest request, HttpServletResponse response) throws IOException{
-         try{
-            long codigo =Long.parseLong(request.getParameter("codigo").trim());
-            String nombre = request.getParameter("nombre").trim();
-            String descripcion = request.getParameter("descripcion").trim();
-            int cantidad = Integer.parseInt(request.getParameter("cantidad").trim());
-            int precio = Integer.parseInt(request.getParameter("precio").trim());
-            int estado =Integer.parseInt( request.getParameter("estado").trim());
-            if(codigo<1||nombre.equals("")||descripcion.equals("")||cantidad<1||precio<1||estado<1){
-                response.sendRedirect("modProducto.jsp?msj=valores erroneos");
-            }else{
-                EstadoDAO ed = new EstadoDAO();
-                Producto nuevoProducto = new Producto (codigo,nombre,descripcion,
-                        cantidad,precio,ed.obtenerEstado(estado));
-                ProductoDAO pd = new ProductoDAO();
-                if(pd.obtenerProducto(nuevoProducto.getCodigo())==null){
-                    response.sendRedirect("modProducto.jsp?msj=Codigo de producto inexistente");
-                }else{
-                   int respuesta = pd.modificar(nuevoProducto);
-                   if(respuesta>0){
-                       response.sendRedirect("crudProductos.jsp?msj=Producto modificado");
-                   }else{
-                       response.sendRedirect("crudProductos.jsp?msj=Producto no se pudo modificar");
-                   }
-                }
-            }
-         }catch(Exception e){
-             
-         }
-    }
+           }
+
          private void registrar(HttpServletRequest request, HttpServletResponse response) throws IOException{
            try{
-            long codigo =Long.parseLong(request.getParameter("codigo").trim());
+            long id =Long.parseLong(request.getParameter("codigo").trim());
             String nombre = request.getParameter("nombre").trim();
             String descripcion = request.getParameter("descripcion").trim();
             //int cantidad = Integer.parseInt(request.getParameter("cantidad").trim());
             int precio = Integer.parseInt(request.getParameter("precio").trim());
             int estado =Integer.parseInt( request.getParameter("estado").trim());
                int cantidad = 0;
-            if(codigo<1||nombre.equals("")||descripcion.equals("")||cantidad<1||precio<1||estado<1){
+            if(id<1||nombre.equals("")||descripcion.equals("")||cantidad<1||precio<1||estado<1){
                 response.sendRedirect("crudProductos.jsp?msj=valores erroneos");
             }else{
                 EstadoDAO ed = new EstadoDAO();
-                Producto nuevoProducto = new Producto (codigo,nombre,descripcion,
+                Requerimiento nuevoRequerimiento = new Requerimiento (id,nombre,descripcion,
                         cantidad,precio,ed.obtenerEstado(estado));
-                ProductoDAO pd = new ProductoDAO();
-                if(pd.obtenerProducto(nuevoProducto.getCodigo())==null){
-                    int respuesta = pd.registrar(nuevoProducto);
+                RequerimientoDAO pd = new RequerimientoDAO();
+                if(pd.obtenerRequerimiento(nuevoRequerimiento.getId())==null){
+                    int respuesta = pd.registrar(nuevoRequerimiento);
                     if(respuesta==1){
                     response.sendRedirect("crudProductos.jsp?msj=Producto registrado");
                     }else{

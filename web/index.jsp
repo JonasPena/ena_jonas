@@ -4,7 +4,6 @@
     Author     : Edgard
 --%>
 
-<%@page import="modelos.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,23 +13,24 @@
     </head>
     <body>
         <center>
-        <h1>Inicio Bienvenido</h1>
-        
+        <h1>Inicio de Sesion</h1>
+        <form action="ControladorUsuario" method="post">
+        <table>
             <tr>
-                
-                <td><a href="index_1.jsp">
-                        <input type="button" value="Acceso Administradores"/>
+                <td>Id</td>
+                <td><input type="text" name="id"/></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Iniciar Sesion"/></td>
+                <td><a href="registro.jsp">
+                        
                     </a>
                 </td>
             </tr>
-                        <tr>
-                
-                <td><a href="crudProductos.jsp">
-                        <input type="button" value="Acceso Usuarios"/>
-                    </a>
-                </td>
-            </tr>
-            
         </table>
             <input type="hidden" name="accion" value="1"/>
         <% if(request.getParameter("msj")!= null){%>
